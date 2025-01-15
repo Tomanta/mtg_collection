@@ -8,3 +8,7 @@ dependencies = [
     "click>=8.1.8",
     "pytest>=8.3.4",
 ]
+
+[tool.ruff]
+# Allow lines to be up to 120 characters
+line-length = 120
