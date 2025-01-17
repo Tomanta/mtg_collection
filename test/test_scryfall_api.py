@@ -1,10 +1,8 @@
 import requests
 import requests_mock
+import json
 from api.scryfall_api import call_api
-
-# adapter = requests_mock.Adapter()
-
-# adapter.register_uri('GET', 'https://api.scryfall.com/bulk-data', request_headers={}, status_code = 200, text='{"data":"text"}')
+import pytest
 
 bulk_response = """
 {
@@ -81,7 +79,7 @@ bulk_response = """
 """
 
 def test_bulk_api_success():
-    expected = bulk_response
+    expected = json.loads(bulk_response)
 
     with requests_mock.Mocker() as m:
         m.get('https://api.scryfall.com/bulk-data', status_code = 200, text = bulk_response)
@@ -89,10 +87,9 @@ def test_bulk_api_success():
     assert result == expected
 
 
-def test_bulk_api_success():
-    expected = "oracle_cards"
-
+def test_bulk_api_404():
     with requests_mock.Mocker() as m:
-        m.get('https://api.scryfall.com/bulk-data', status_code = 200, text = bulk_response)
-        result = call_api("bulk")
-    assert result == expected
+        m.get('https://api.scryfall.com/bulk-data', status_code = 404)
+        with pytest.raises(ValueError):
+            result = call_api("bob")
+    
