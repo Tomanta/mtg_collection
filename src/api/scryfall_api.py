@@ -13,7 +13,7 @@ ONE_SECOND = 1  # Scryfall requests only sending 10 request per second; we'll be
 
 
 @limits(calls=1, period=ONE_SECOND)
-def call_api(endpoint):
+def call_api(endpoint: str) -> dict:
     if endpoint not in SCRYFALL_ENDPOINTS:
         raise ValueError()
 
@@ -25,5 +25,5 @@ def call_api(endpoint):
         raise Exception("404: Endpoint not found!")
     elif response.status_code != 200:
         raise Exception(f"API response {response.status_code}")
-
-    print(response.json()["data"][0]["type"])
+    
+    return response.json()["data"][0]["type"]
