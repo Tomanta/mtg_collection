@@ -78,18 +78,18 @@ bulk_response = """
 }
 """
 
+
 def test_bulk_api_success():
     expected = json.loads(bulk_response)
 
     with requests_mock.Mocker() as m:
-        m.get('https://api.scryfall.com/bulk-data', status_code = 200, text = bulk_response)
+        m.get("https://api.scryfall.com/bulk-data", status_code=200, text=bulk_response)
         result = call_api("bulk")
     assert result == expected
 
 
 def test_bulk_api_404():
     with requests_mock.Mocker() as m:
-        m.get('https://api.scryfall.com/bulk-data', status_code = 404)
+        m.get("https://api.scryfall.com/bulk-data", status_code=404)
         with pytest.raises(ValueError):
             result = call_api("bob")
-    
