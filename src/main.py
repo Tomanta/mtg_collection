@@ -1,4 +1,3 @@
-import click
 from commands import cmd_init
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Integer, String, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Integer, String  # , ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column  # , relationship
 
 
 class Base(DeclarativeBase):
@@ -18,4 +18,4 @@ class Card(Base):
     scryfall_uri: Mapped[str] = mapped_column(String(100))  # TODO: Validate length needed here
 
     def __repr__(self) -> str:
-        return f""
+        return f"ID({self.id!r}), ARENA_ID({self.arena_id!r}), TCGPLAYER_ID({self.tcgplayer_id!r})"

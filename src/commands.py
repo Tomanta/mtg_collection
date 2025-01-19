@@ -1,8 +1,6 @@
 import click
-from pathlib import Path
-from api.scryfall_api import call_api
 from database.db_setup import init_db
-import requests
+import data_commands
 
 """
 Need:
@@ -29,64 +27,39 @@ Need:
 - launch gui interface
 """
 
+
 @click.group()
 def cli() -> None:
     pass
 
+
 @cli.group()
-def db():
-    """Database group"""
+def setup():
+    """Setup options"""
+
+
+@cli.group()
+def data():
+    """Data related commands"""
     pass
 
 
-def file_download(source, destination):
-    response = requests.get(source)
-    if response.status_code == 200:
-        with open(destination, "wb") as f:
-            f.write(response.content)
-
-        return True  # File saved successfully
-
-    return False  # File failed
-
-@db.command()
-def create():
+@setup.command(help="Initialize the database")
+@click.option("--path", default=None, help="Path to the database file")
+def create_db(path):
+    if not path:
+        path = ":memory:"
+    # Check if path exists and is a directory, return error if not
     click.echo("Creating database...")
     init_db()
 
 
-@click.command()
-def bulk():
-    bulk_data = call_api("bulk")
-
-    directory = {}
-
-    for item in bulk_data["data"]:
-        directory[item["type"]] = {
-            "download_uri": item["download_uri"],
-            "filename": f"{item['id']}.json",
-            "updated_at": item["updated_at"],
-        }
-
-    base_path = Path.cwd()
-    bulk_path = Path("data")
-    file = Path(directory["default_cards"]["filename"])
-    full_path = base_path / bulk_path / file
-    print(full_path)
-
-    if full_path.is_file():
-        click.echo("File already exists!")
-    else:
-        result = file_download(directory["default_cards"]["download_uri"], full_path)
-        if result:
-            click.echo("File downloaded successfully")
-        else:
-            click.echo("File download failed")
-
-    SystemExit(0)  # Success
+@data.command(help="Perform the initial load into the database")
+def initial_load():
+    data_commands.bulk()
 
 
 def cmd_init():
-    cli.add_command(bulk)
-    db.add_command(create)
+    data.add_command(initial_load)
+    setup.add_command(create_db)
     return cli

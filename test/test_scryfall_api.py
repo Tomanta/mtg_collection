@@ -1,4 +1,3 @@
-import requests
 import requests_mock
 import json
 from api.scryfall_api import call_api
@@ -92,4 +91,4 @@ def test_bulk_api_404():
     with requests_mock.Mocker() as m:
         m.get("https://api.scryfall.com/bulk-data", status_code=404)
         with pytest.raises(ValueError):
-            result = call_api("bob")
+            call_api("bob")
