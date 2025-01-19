@@ -2,6 +2,7 @@ import click
 import os
 from pathlib import Path
 from api.scryfall_api import call_api
+from database.db_setup import init_db
 import requests
 
 
@@ -15,6 +16,10 @@ def file_download(source, destination):
 
     return False  # File failed
 
+@click.command()
+def create_db():
+    click.echo("Creating database...")
+    init_db()
 
 @click.command()
 def bulk():
