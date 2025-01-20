@@ -69,11 +69,13 @@ def create_db(path):
     # Check if path exists and is a directory, return error if not
     click.echo("Creating database...")
     init_db(connection_string=path)
+    SystemExit(0)  # Success
 
 
 @data.command(help="Perform the initial load into the database")
 def initial_load():
     data_commands.bulk()
+    SystemExit(0)  # Success
 
 
 def cmd_init():

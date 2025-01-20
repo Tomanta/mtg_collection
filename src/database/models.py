@@ -1,5 +1,5 @@
-from uuid import uuid4
 from typing import Optional, Dict
+from uuid import uuid4
 from sqlalchemy import Integer, String, Uuid, JSON
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 

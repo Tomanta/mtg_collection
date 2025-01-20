@@ -40,8 +40,6 @@ def load_all_cards(dbconn):
             session.add(new_card)
         session.commit()
 
-    SystemExit(0)  # Success
-
 
 def file_download(source, destination):
     response = requests.get(source)
@@ -80,5 +78,3 @@ def bulk():
             click.echo("File downloaded successfully")
         else:
             click.echo("File download failed")
-
-    SystemExit(0)  # Success

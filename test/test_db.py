@@ -1,4 +1,5 @@
 import json
+from uuid import UUID
 from database.db_setup import init_db
 from database.db_conn import DBConn
 from database.models import Card
@@ -143,19 +144,20 @@ def test_card_load():
 
     # use .get() instead of [] here so it returns None if the key is not found
     new_card = Card(
-        id=card.get("id"),
+        id=UUID(card.get("id")),
         arena_id=card.get("arena_id"),
         lang=card.get("lang"),
-        mtgo_id=card.get("mtgo_id"),
-        mtgo_foil_id=card.get("mtgo_foil_id"),
         tcgplayer_id=card.get("tcgplayer_id"),
         tcgplayer_etched_id=card.get("tcgplayer_etched_id"),
         cardmarket_id=card.get("cardmarked_it"),
         layout=card.get("layout"),
-        oracle_id=card.get("oracle_id"),
+        oracle_id=UUID(card.get("oracle_id")) if card.get("oracle_id") else None,
         scryfall_uri=card.get("scryfall_uri"),
         uri=card.get("uri"),
-        cmc=card.get("cmc"),
         name=card.get("name"),
+        set=card.get("set"),
+        set_name=card.get("set_name"),
+        rarity=card.get("rarity"),
+        data=card,
     )
     print(new_card)
