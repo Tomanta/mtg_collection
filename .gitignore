@@ -4,6 +4,9 @@ venv.sh
 # Project data folders
 data/*
 
+# Database
+*.sqlite
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

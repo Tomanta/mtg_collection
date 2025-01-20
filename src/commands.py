@@ -1,6 +1,7 @@
 import click
 from database.db_setup import init_db
 import data_commands
+from database.db_conn import DBConn
 
 """
 Need:
@@ -43,15 +44,30 @@ def data():
     """Data related commands"""
     pass
 
+@data.command(help="Load initial cards")
+@click.option("--path", default=None, help="Path to the database file")
+def load_cards(path):
+    if not path:
+        path = "sqlite:///:memory:"
+    else:
+        path = f"sqlite:///{path}"
+    # Check if path exists and is a directory, return error if not
+    db_conn = DBConn(path, echo=True)
+    
+    click.echo("Loading cards...")
+    data_commands.load_all_cards(db_conn)
+
 
 @setup.command(help="Initialize the database")
 @click.option("--path", default=None, help="Path to the database file")
 def create_db(path):
     if not path:
-        path = ":memory:"
+        path = "sqlite:///:memory:"
+    else:
+        path = f"sqlite:///{path}"
     # Check if path exists and is a directory, return error if not
     click.echo("Creating database...")
-    init_db()
+    init_db(connection_string=path)
 
 
 @data.command(help="Perform the initial load into the database")

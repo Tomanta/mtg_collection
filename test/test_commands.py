@@ -1,7 +1,7 @@
 from click.testing import CliRunner
 import requests
 import pytest
-from commands import bulk
+from data_commands import bulk
 
 
 class MockResponse:
