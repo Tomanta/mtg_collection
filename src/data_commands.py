@@ -1,12 +1,12 @@
-from api.scryfall_api import call_api
+import click
+import json
 import requests
 from pathlib import Path
-import click
-from database.models import Card
-from uuid import UUID
-
 from sqlalchemy.orm import Session
-import json
+from uuid import UUID
+from database.models import Card
+from api.scryfall_api import call_api
+
 
 def load_all_cards(dbconn):
     bulk = "data/e2ef41e3-5778-4bc2-af3f-78eca4dd9c23.json"
@@ -18,8 +18,8 @@ def load_all_cards(dbconn):
 
     with Session(engine) as session:
         for card in card_data:
-            click.echo(f"Loading {card.get("name")}")
-        # use .get() instead of [] here so it returns None if the key is not found
+            click.echo(f"Loading {card.get('name')}")
+            # use .get() instead of [] here so it returns None if the key is not found
             new_card = Card(
                 id=UUID(card.get("id")),
                 arena_id=card.get("arena_id"),
@@ -32,10 +32,16 @@ def load_all_cards(dbconn):
                 scryfall_uri=card.get("scryfall_uri"),
                 uri=card.get("uri"),
                 name=card.get("name"),
-                data=card
+                set=card.get("set"),
+                set_name=card.get("set_name"),
+                rarity=card.get("rarity"),
+                data=card,
             )
             session.add(new_card)
         session.commit()
+
+    SystemExit(0)  # Success
+
 
 def file_download(source, destination):
     response = requests.get(source)
@@ -76,4 +82,3 @@ def bulk():
             click.echo("File download failed")
 
     SystemExit(0)  # Success
-

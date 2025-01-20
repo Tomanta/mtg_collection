@@ -2,7 +2,6 @@ import json
 from database.db_setup import init_db
 from database.db_conn import DBConn
 from database.models import Card
-import pytest
 
 sample_card = """
 {

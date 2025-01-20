@@ -44,6 +44,7 @@ def data():
     """Data related commands"""
     pass
 
+
 @data.command(help="Load initial cards")
 @click.option("--path", default=None, help="Path to the database file")
 def load_cards(path):
@@ -53,7 +54,7 @@ def load_cards(path):
         path = f"sqlite:///{path}"
     # Check if path exists and is a directory, return error if not
     db_conn = DBConn(path, echo=False)
-    
+
     click.echo("Loading cards...")
     data_commands.load_all_cards(db_conn)
 
