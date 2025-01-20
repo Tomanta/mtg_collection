@@ -52,7 +52,7 @@ def load_cards(path):
     else:
         path = f"sqlite:///{path}"
     # Check if path exists and is a directory, return error if not
-    db_conn = DBConn(path, echo=True)
+    db_conn = DBConn(path, echo=False)
     
     click.echo("Loading cards...")
     data_commands.load_all_cards(db_conn)

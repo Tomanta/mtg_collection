@@ -16,29 +16,26 @@ def load_all_cards(dbconn):
     with open(bulk, "r") as f:
         card_data = json.load(f)
 
-    for card in card_data:
-
-    # use .get() instead of [] here so it returns None if the key is not found
-        new_card = Card(
-            id=UUID(card.get("id")),
-            arena_id=card.get("arena_id"),
-            lang=card.get("lang"),
-            mtgo_id=card.get("mtgo_id"),
-            mtgo_foil_id=card.get("mtgo_foil_id"),
-            tcgplayer_id=card.get("tcgplayer_id"),
-            tcgplayer_etched_id=card.get("tcgplayer_etched_id"),
-            cardmarket_id=card.get("cardmarked_it"),
-            layout=card.get("layout"),
-            oracle_id=UUID(card.get("oracle_id")) if card.get("oracle_id") else None,
-            scryfall_uri=card.get("scryfall_uri"),
-            uri=card.get("uri"),
-            cmc=card.get("cmc"),
-            name=card.get("name"),
-        )
-        
-        with Session(engine) as session:
+    with Session(engine) as session:
+        for card in card_data:
+            click.echo(f"Loading {card.get("name")}")
+        # use .get() instead of [] here so it returns None if the key is not found
+            new_card = Card(
+                id=UUID(card.get("id")),
+                arena_id=card.get("arena_id"),
+                lang=card.get("lang"),
+                tcgplayer_id=card.get("tcgplayer_id"),
+                tcgplayer_etched_id=card.get("tcgplayer_etched_id"),
+                cardmarket_id=card.get("cardmarked_it"),
+                layout=card.get("layout"),
+                oracle_id=UUID(card.get("oracle_id")) if card.get("oracle_id") else None,
+                scryfall_uri=card.get("scryfall_uri"),
+                uri=card.get("uri"),
+                name=card.get("name"),
+                data=card
+            )
             session.add(new_card)
-            session.commit()
+        session.commit()
 
 def file_download(source, destination):
     response = requests.get(source)
