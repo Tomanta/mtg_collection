@@ -38,12 +38,20 @@ def cli() -> None:
 def setup():
     """Setup options"""
 
+@cli.group()
+def search():
+    """Search options"""
 
 @cli.group()
 def data():
     """Data related commands"""
     pass
 
+
+@search.command(help="Perform a scryfall query")
+@click.option("--query", help="The query parameters")
+def scryfall_query(query):
+    pass
 
 @data.command(help="Load initial cards")
 @click.option("--path", default=None, help="Path to the database file")

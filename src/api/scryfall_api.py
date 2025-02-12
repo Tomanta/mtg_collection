@@ -8,7 +8,8 @@ SCRYFALL_HEADERS = {
     "Accept": "*/*",
 }
 
-SCRYFALL_ENDPOINTS = {"bulk": "/bulk-data"}
+SCRYFALL_ENDPOINTS = {"bulk": "/bulk-data",
+                      "search": "/cards/search"}
 
 ONE_SECOND = 1  # Scryfall requests only sending 10 request per second; we'll be nice and say 1 per second
 
