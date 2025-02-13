@@ -2,6 +2,7 @@ import click
 from database.db_setup import init_db
 import data_commands
 from database.db_conn import DBConn
+from api.scryfall_api import call_api
 
 """
 Need:
@@ -51,7 +52,9 @@ def data():
 @search.command(help="Perform a scryfall query")
 @click.option("--query", help="The query parameters")
 def scryfall_query(query):
-    pass
+    results = call_api("search", {"q": query, "unique":"art"})
+    print(results)
+
 
 @data.command(help="Load initial cards")
 @click.option("--path", default=None, help="Path to the database file")

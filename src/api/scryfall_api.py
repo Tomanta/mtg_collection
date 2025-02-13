@@ -16,12 +16,12 @@ ONE_SECOND = 1  # Scryfall requests only sending 10 request per second; we'll be
 
 @on_exception(expo, RateLimitException, max_tries=3)
 @limits(calls=1, period=ONE_SECOND)
-def call_api(endpoint: str) -> dict:
+def call_api(endpoint: str, options: dict) -> dict:
     if endpoint not in SCRYFALL_ENDPOINTS:
         raise ValueError()
 
     url = f"{SCRYFALL_ROOT}{SCRYFALL_ENDPOINTS[endpoint]}"
-    response = requests.get(url, SCRYFALL_HEADERS)
+    response = requests.get(url, SCRYFALL_HEADERS | options)
     if response.status_code == 429:
         raise Exception("429: Fatal Error, Too many requests!")
     elif response.status_code == 404:
