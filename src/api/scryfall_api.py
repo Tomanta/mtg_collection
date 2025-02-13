@@ -8,15 +8,14 @@ SCRYFALL_HEADERS = {
     "Accept": "*/*",
 }
 
-SCRYFALL_ENDPOINTS = {"bulk": "/bulk-data",
-                      "search": "/cards/search"}
+SCRYFALL_ENDPOINTS = {"bulk": "/bulk-data", "search": "/cards/search"}
 
 ONE_SECOND = 1  # Scryfall requests only sending 10 request per second; we'll be nice and say 1 per second
 
 
 @on_exception(expo, RateLimitException, max_tries=3)
 @limits(calls=1, period=ONE_SECOND)
-def call_api(endpoint: str, options: dict) -> dict:
+def call_api(endpoint: str, options: dict = {}) -> dict:
     if endpoint not in SCRYFALL_ENDPOINTS:
         raise ValueError()
 

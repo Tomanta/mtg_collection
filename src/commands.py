@@ -39,9 +39,11 @@ def cli() -> None:
 def setup():
     """Setup options"""
 
+
 @cli.group()
 def search():
     """Search options"""
+
 
 @cli.group()
 def data():
@@ -52,8 +54,12 @@ def data():
 @search.command(help="Perform a scryfall query")
 @click.option("--query", help="The query parameters")
 def scryfall_query(query):
-    results = call_api("search", {"q": query, "unique":"art"})
-    print(results)
+    results = call_api("search", {"q": query, "unique": "art"})
+    data_set = []
+    for card in results["data"]:
+        data_set.append((card["name"], " ".join([card["set"], card["collector_number"]])))
+    for card in data_set:
+        print(card)
 
 
 @data.command(help="Load initial cards")
